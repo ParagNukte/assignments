@@ -25,17 +25,17 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full">
-        <div className="flex justify-center p-2 border-b border-blue-800">
-          <div className="flex items-center justify-center w-full py-4">
+      <div className="flex flex-col h-full overflow-y-scroll text-black ">
+        <div className="flex justify-center p-2 border-blue-800">
+          <div className="flex items-center justify-center w-full py-4 ">
             <img src={Logo} alt="Mumbisoft" className="h-8" />
           </div>
         </div>
 
-        <div className="flex-1 py-4 overflow-y-auto">
+        <div className="flex-1 py-4 ">
           <ul className="space-y-4 list-none ">
             {menuItems.map((item, index) => (
-              <li key={index} className="px-2">
+              <li key={index} className="">
                 <button
                   onClick={() => setActiveItem(item.name)}
                   className={`
