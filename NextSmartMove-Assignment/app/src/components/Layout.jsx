@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import ToggledComponent from "./ToggledComponent";
-import RightSidebar from "./RightSidebar";
 
 const Layout = ({ children }) => {
   // State to track whether the toggle component should be visible
@@ -11,11 +10,6 @@ const Layout = ({ children }) => {
   // Function to handle toggle component visibility
   const handleToggleComponent = (isVisible) => {
     setShowToggleComponent(isVisible);
-  };
-
-  const handleMenuItemClick = (key) => {
-    console.log(`Menu item clicked: ${key}`);
-    // Handle navigation or content display based on the clicked item
   };
 
   return (
@@ -53,14 +47,11 @@ const Layout = ({ children }) => {
         {/* Main content area with right padding for sidebar */}
         <main className="flex-1 overflow-y-auto m-2 mr-16 w-[calc(100% - )] ">
           {/* Main content area */}
-          <div className="bg-white rounded-lg shadow p-6">{children}</div>
+          <div className="bg-white rounded-lg shadow ">{children}</div>
         </main>
       </div>
 
       {/* Right sidebar positioned to start below header */}
-      <div className="absolute right-0  h-[calc(100%-4rem)] z-10">
-        <RightSidebar onMenuItemClick={handleMenuItemClick} />
-      </div>
     </div>
   );
 };

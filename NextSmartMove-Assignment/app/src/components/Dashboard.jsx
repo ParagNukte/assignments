@@ -92,6 +92,7 @@ import {
   filterDataByStatus,
 } from "../data/mockData";
 import { Chip } from "@mui/material";
+import RightSidebar from "./RightSidebar";
 
 const Dashboard = () => {
   const [tableData, setTableData] = useState(sampleTableData);
@@ -178,11 +179,15 @@ const Dashboard = () => {
     console.log("Filter requested");
     alert("Advanced filtering would open here");
     // Implement your advanced filter logic here
-  
+  };
+
+  const handleMenuItemClick = (key) => {
+    console.log(`Menu item clicked: ${key}`);
+    // Handle navigation or content display based on the clicked item
   };
 
   return (
-    <div className="-container">
+    <div className="flex">
       <DataTable
         data={tableData}
         columns={enhancedColumns}
@@ -195,6 +200,9 @@ const Dashboard = () => {
         onDownload={handleDownload}
         onFilter={handleFilter}
       />
+      <div className="absolute right-0  h-full z-10">
+        <RightSidebar onMenuItemClick={handleMenuItemClick} />
+      </div>
     </div>
   );
 };

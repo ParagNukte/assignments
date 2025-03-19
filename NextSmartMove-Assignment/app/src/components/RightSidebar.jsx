@@ -36,7 +36,7 @@ const RightSidebar = ({ onMenuItemClick = () => {} }) => {
   ];
 
   return (
-    <div className="h-full w-20 mt-18 bg-white rounded-lg shadow-lg transition-all duration-300 flex  justify-center items-center flex-col">
+    <div className="h-full w-20  bg-white rounded-lg shadow-lg transition-all duration-300 flex  justify-center items-center flex-col">
       {/* Menu items */}
       <div className="flex-1 overflow-y-auto py-2 w-14 text-black ">
         {menuItems.map((item) => (

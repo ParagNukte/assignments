@@ -75,6 +75,7 @@ const TransactionTree = () => {
               >
                 <div className="w-6"></div>
                 <div className="flex items-center">
+                  
                   <span>{subItem.name}</span>
                 </div>
                 <div className="ml-auto mr-4">
@@ -96,39 +97,7 @@ const TransactionTree = () => {
     <div className="bg-white rounded shadow w-64 text-black">
       <div className="p-2 border-b flex justify-between items-center">
         <span className="font-medium">Transaction Contents</span>
-        <div className="flex space-x-1">
-          <button className="p-1 text-gray-500 hover:bg-gray-100 rounded">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="8" y1="12" x2="16" y2="12"></line>
-            </svg>
-          </button>
-          <button className="p-1 text-gray-500 hover:bg-gray-100 rounded">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="12" y1="8" x2="12" y2="16"></line>
-              <line x1="8" y1="12" x2="16" y2="12"></line>
-            </svg>
-          </button>
-        </div>
+        <div className="flex space-x-1"> </div>
       </div>
 
       <div className="flex justify-between p-2 bg-gray-50 border-b">
