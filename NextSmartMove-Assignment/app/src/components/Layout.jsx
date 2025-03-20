@@ -29,7 +29,11 @@ const Layout = ({ children }) => {
             showToggleComponent ? "opacity-100" : "opacity-0"
           } transition-opacity duration-300`}
         >
-          <ToggledComponent />
+          {/* Pass toggle state and handler to ToggledComponent */}
+          <ToggledComponent 
+            isHeaderToggleVisible={!showToggleComponent} 
+            onToggle={() => handleToggleComponent(!showToggleComponent)} 
+          />
         </div>
       </div>
 
@@ -42,7 +46,10 @@ const Layout = ({ children }) => {
         style={showToggleComponent ? { marginLeft: "16rem" } : {}}
       >
         {/* Header spans full width */}
-        <Header onToggleComponent={handleToggleComponent} />
+        <Header 
+          showToggleComponent={showToggleComponent}
+          onToggleComponent={handleToggleComponent} 
+        />
 
         {/* Main content area with right padding for sidebar */}
         <main className="flex-1 overflow-y-auto m-2 mr-16 w-[calc(100% - )] ">

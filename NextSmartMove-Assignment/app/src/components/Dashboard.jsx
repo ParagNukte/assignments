@@ -93,6 +93,7 @@ import {
 } from "../data/mockData";
 import { Chip } from "@mui/material";
 import RightSidebar from "./RightSidebar";
+import Filter from "./Filter";
 
 const Dashboard = () => {
   const [tableData, setTableData] = useState(sampleTableData);
@@ -176,9 +177,7 @@ const Dashboard = () => {
   };
 
   const handleFilter = () => {
-    console.log("Filter requested");
-    alert("Advanced filtering would open here");
-    // Implement your advanced filter logic here
+    <Filter />;
   };
 
   const handleMenuItemClick = (key) => {

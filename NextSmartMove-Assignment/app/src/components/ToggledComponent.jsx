@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { sampleTableData } from "../data/mockData"; // Import data from mockData.js
+import ToggleButton from "./ToggleButton"; // Import the ToggleButton component
 
-const TransactionTree = () => {
+const TransactionTree = ({ isHeaderToggleVisible, onToggle }) => {
   // Transform the data to use stage-based naming convention
   const transformedData = sampleTableData.map((item) => ({
     id: item.id,
@@ -13,13 +14,16 @@ const TransactionTree = () => {
     updateDate: item.updateDate,
     subRows: item.subRows.map((subItem, index) => ({
       taskId: subItem.taskId,
-      name: `Stage ${item.id}.${index + 1}`,
+      name: `${item.id}.${index + 1} Stage `,
       originalTaskName: subItem.taskName,
       assignee: subItem.assignee,
       dueDate: subItem.dueDate,
       taskStatus: subItem.taskStatus,
       priority: subItem.priority,
       notes: subItem.notes,
+      // Add a document property to each subItem based on the taskName
+      document:
+        subItem.notes && subItem.notes.includes("pdf") ? "document.pdf" : "",
     })),
   }));
 
@@ -38,19 +42,20 @@ const TransactionTree = () => {
   const renderTreeItem = (item) => {
     const hasChildren = item.subRows && item.subRows.length > 0;
     const isExpanded = expandedItems[item.id];
+    const hasDocument = item.document && item.document.length > 0;
 
     return (
       <div key={item.id} className="w-full text-black">
         <div
-          className="flex items-center py-2  hover:bg-gray-100 cursor-pointer"
+          className="flex items-center py-2 hover:bg-gray-100 cursor-pointer"
           onClick={() => hasChildren && toggleExpand(item.id)}
         >
-          <div className="w-6">
+          <div className="w-2 mx-2">
             {hasChildren ? (
               isExpanded ? (
-                <img src="/icons/cheveron-down.svg" alt="" srcset="" />
+                <img src="/icons/chevron-down.svg" alt="Expanded" />
               ) : (
-                <img src="/icons/cheveron-right.svg" alt="" srcset="" />
+                <img src="/icons/chevron-right.svg" alt="Collapsed" />
               )
             ) : (
               <div className="w-4" />
@@ -58,35 +63,63 @@ const TransactionTree = () => {
           </div>
 
           <div className="flex items-center">
-            <span>{item.name}</span>
+            <div className="mr-2">
+              <img src="/icons/folder.svg" alt="Folder" />
+            </div>
+            <span className="flex-grow">{item.name}</span>
           </div>
 
-          <div className="ml-auto mr-4">
-            <img src="/icons/exclamation-circle-solid.svg" alt="" srcset="" />
+          <div className="ml-auto flex items-center">
+            {hasDocument && (
+              <div className="mr-2">
+                <img src="/icons/plus-circle-solid.svg" alt="Add" />
+              </div>
+            )}
+            <div className="mr-4">
+              <img src="/icons/exclamation-circle-solid.svg" alt="Alert" />
+            </div>
           </div>
         </div>
 
         {hasChildren && isExpanded && (
           <div className="pl-6 border-l border-dashed border-gray-300 ml-3">
-            {item.subRows.map((subItem) => (
-              <div
-                key={subItem.taskId}
-                className="flex items-center py-2 px-2 hover:bg-gray-100"
-              >
-                <div className="w-6"></div>
-                <div className="flex items-center">
-                  
-                  <span>{subItem.name}</span>
+            {item.subRows.map((subItem) => {
+              const hasSubDocument =
+                subItem.document && subItem.document.length > 0;
+
+              return (
+                <div
+                  key={subItem.taskId}
+                  className="flex items-center py-2 px-2 hover:bg-gray-100"
+                >
+                  <div className="w-6"></div>
+                  <div className="flex items-center">
+                    <div className="mr-2">
+                      {hasSubDocument ? (
+                        <img src="/icons/file.svg" alt="Document" />
+                      ) : (
+                        <img src="/icons/folder.svg" alt="Folder" />
+                      )}
+                    </div>
+                    <span className="flex-grow">{subItem.name}</span>
+                  </div>
+
+                  <div className="ml-auto flex items-center">
+                    {hasSubDocument && (
+                      <div className="mr-2">
+                        <img src="/icons/plus.svg" alt="Add" />
+                      </div>
+                    )}
+                    <div className="mr-2">
+                      <img
+                        src="/icons/exclamation-circle-solid.svg"
+                        alt="Alert"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="ml-auto mr-4">
-                  <img
-                    src="/icons/exclamation-circle-solid.svg"
-                    alt=""
-                    srcset=""
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -95,9 +128,17 @@ const TransactionTree = () => {
 
   return (
     <div className="bg-white rounded shadow w-64 text-black">
-      <div className="p-2 border-b flex justify-between items-center">
+      <div className="p-2 border-b flex justify-between items-center h-16 ">
         <span className="font-medium">Transaction Contents</span>
-        <div className="flex space-x-1"> </div>
+        <div className="flex space-x-1">
+          {/* Render ToggleButton in TransactionTree only when it's not visible in header */}
+          {!isHeaderToggleVisible && (
+            <ToggleButton
+              isActive={!isHeaderToggleVisible}
+              onClick={onToggle}
+            />
+          )}
+        </div>
       </div>
 
       <div className="flex justify-between p-2 bg-gray-50 border-b">

@@ -1,46 +1,25 @@
-import React, { useState } from "react";
-import ToggleIcon from "../../public/icons/Group 193552.svg";
+import React from "react";
 import HomeIcon from "../../public/icons/house-solid.svg";
 import ChevronRightIcon from "../../public/icons/chevron-right.svg";
+import ToggleButton from "./ToggleButton"; // Import the ToggleButton component
 
-const Header = ({ onToggleComponent }) => {
-  const [isComponentVisible, setIsComponentVisible] = useState(false);
-
+const Header = ({ showToggleComponent, onToggleComponent }) => {
   // Current page path for breadcrumbs - this would typically come from your router
   const currentPath = ["Dashboard", "Analytics", "Performance"];
 
   const handleToggle = () => {
-    const newState = !isComponentVisible;
-    setIsComponentVisible(newState);
-    onToggleComponent(newState);
+    onToggleComponent(!showToggleComponent);
   };
 
   return (
     <header className="bg-white shadow-sm h-16 flex items-center justify-between px-4 md:px-6">
       <div className="flex items-center">
-        {/* Toggle Button */}
-        <button
-          onClick={handleToggle}
-          className={`
-            mr-4 p-2 rounded-md transition-colors
-            ${
-              isComponentVisible
-                ? "bg-blue-100 text-blue-600"
-                : "bg-gray-100 text-gray-600"
-            }
-            hover:bg-blue-50
-          `}
-          aria-label="Toggle Component"
-        >
-          <img
-            src={ToggleIcon}
-            alt="Toggle"
-            className={`
-              w-5 h-5 transition-transform duration-300
-              ${isComponentVisible ? "rotate-180" : "rotate-0"}
-            `}
-          />
-        </button>
+        {/* Toggle Button Component - Only show when showToggleComponent is false */}
+        {!showToggleComponent && (
+          <div className="mr-4">
+            <ToggleButton isActive={showToggleComponent} onClick={handleToggle} />
+          </div>
+        )}
 
         {/* Breadcrumbs */}
         <nav className="flex items-center text-sm text-gray-600">
