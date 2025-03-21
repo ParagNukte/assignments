@@ -1,90 +1,7 @@
-/* import React, { useState } from "react";
-import DataTable from "./DataTable";
-import {
-  dataTableColumns,
-  statusOptions,
-  dropdownOptions,
-  sampleTableData,
-} from "../data/mockData";
-import { Chip } from "@mui/material";
-
-const Dashboard = () => {
-  const [tableData, setTableData] = useState(sampleTableData);
-
-  // Configure column rendering for the data table
-  const enhancedColumns = dataTableColumns.map((column) => {
-    // Add custom rendering for the status column
-    if (column.id === "status") {
-      return {
-        ...column,
-        render: (value) => {
-          const statusOption = statusOptions.find(
-            (option) => option.value === value
-          );
-          return (
-            <Chip
-              label={statusOption?.label || value}
-              color={statusOption?.color || "default"}
-              size="small"
-            />
-          );
-        },
-      };
-    }
-    return column;
-  });
-
-  // Event handlers
-  const handleSearch = (searchTerm) => {
-    console.log("Searching for:", searchTerm);
-    // Implement your search logic here
-  };
-
-  const handleStatusChange = (status) => {
-    console.log("Status changed to:", status);
-    // Implement your status filter logic here
-  };
-
-  const handleDropdownChange = (option) => {
-    console.log("Dropdown changed to:", option);
-    // Implement your dropdown change logic here
-  };
-
-  const handleDownload = () => {
-    console.log("Download requested");
-    // Implement your download logic here
-  };
-
-  const handleFilter = () => {
-    console.log("Filter requested");
-    // Implement your advanced filter logic here
-  };
-
-  return (
-    <div className="dashboard-container">
-      <DataTable
-        data={tableData}
-        columns={enhancedColumns}
-        statusOptions={statusOptions}
-        dropdownOptions={dropdownOptions}
-        onSearchChange={handleSearch}
-        onStatusChange={handleStatusChange}
-        onDropdownChange={handleDropdownChange}
-        onDownload={handleDownload}
-        onFilter={handleFilter}
-      />
-    </div>
-  );
-};
-
-export default Dashboard;
- */
-
 import React, { useState } from "react";
 import DataTable from "./DataTable";
 import {
   dataTableColumns,
-  subRowColumns,
   statusOptions,
   dropdownOptions,
   sampleTableData,
@@ -93,11 +10,13 @@ import {
 } from "../data/mockData";
 import { Chip } from "@mui/material";
 import RightSidebar from "./RightSidebar";
+import Sidebar from "./Sidebar";
 import Filter from "./Filter";
 
 const Dashboard = () => {
   const [tableData, setTableData] = useState(sampleTableData);
-
+  const [showFilter, setShowFilter] = useState(false);
+  const [status, setStatus] = useState("");
   // Configure column rendering for the data table
   const enhancedColumns = dataTableColumns.map((column) => {
     // Add custom rendering for the status column
@@ -113,6 +32,11 @@ const Dashboard = () => {
               label={statusOption?.label || value}
               color={statusOption?.color || "default"}
               size="small"
+              sx={{
+                fontWeight: 500,
+                borderRadius: "4px",
+                padding: "0 4px",
+              }}
             />
           );
         },
@@ -134,14 +58,24 @@ const Dashboard = () => {
 
   const handleStatusChange = (status) => {
     console.log("Status changed to:", status);
+    setStatus(status);
     if (!status) {
       setTableData(sampleTableData);
       return;
     }
     const filteredData = filterDataByStatus(sampleTableData, status);
+    console.log(filteredData)
     setTableData(filteredData);
   };
-
+ /*  export const filterDataByStatus = (data, status) => {
+    if (!status || status === "") {
+      return data;
+    }
+    let newData = data.filter((item) => item.status === status);
+    console.log("newdata", newData);
+    return data.filter((item) => item.status === status);
+  };
+ */
   const handleDropdownChange = (option) => {
     console.log("Dropdown changed to:", option);
     // Reset to original data first
@@ -177,7 +111,7 @@ const Dashboard = () => {
   };
 
   const handleFilter = () => {
-    <Filter />;
+    setShowFilter(!showFilter);
   };
 
   const handleMenuItemClick = (key) => {
@@ -186,20 +120,37 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex">
-      <DataTable
-        data={tableData}
-        columns={enhancedColumns}
-        subColumns={subRowColumns}
-        statusOptions={statusOptions}
-        dropdownOptions={dropdownOptions}
-        onSearchChange={handleSearch}
-        onStatusChange={handleStatusChange}
-        onDropdownChange={handleDropdownChange}
-        onDownload={handleDownload}
-        onFilter={handleFilter}
-      />
-      <div className="absolute right-0  h-full z-10">
+    <div className="flex h-screen bg-gray-50">
+      <div className="flex-1 flex flex-col overflow-hidden w-screen">
+        {/* Header could go here if needed */}
+
+        {/* Content area */}
+        <div className="flex-1 overflow-auto">
+          {showFilter && (
+            <div className="mb-4 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+              <Filter />
+            </div>
+          )}
+
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <DataTable
+              data={tableData}
+              columns={enhancedColumns}
+              statusOptions={statusOptions}
+              dropdownOptions={dropdownOptions}
+              onSearchChange={handleSearch}
+              onStatusChange={handleStatusChange}
+              onDropdownChange={handleDropdownChange}
+              onDownload={handleDownload}
+              onFilter={handleFilter}
+              selectedStatus={status}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Right Sidebar */}
+      <div className="w-20 h-full">
         <RightSidebar onMenuItemClick={handleMenuItemClick} />
       </div>
     </div>

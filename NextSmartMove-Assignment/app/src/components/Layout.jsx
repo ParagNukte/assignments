@@ -15,8 +15,6 @@ const Layout = ({ children }) => {
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-
-      {/* Toggled component - slides in from left */}
       <div
         className={`
           fixed top-0 left-16 md:left-20 h-full bg-white border-r border-gray-200 shadow-lg z-20
@@ -30,9 +28,9 @@ const Layout = ({ children }) => {
           } transition-opacity duration-300`}
         >
           {/* Pass toggle state and handler to ToggledComponent */}
-          <ToggledComponent 
-            isHeaderToggleVisible={!showToggleComponent} 
-            onToggle={() => handleToggleComponent(!showToggleComponent)} 
+          <ToggledComponent
+            isHeaderToggleVisible={!showToggleComponent}
+            onToggle={() => handleToggleComponent(!showToggleComponent)}
           />
         </div>
       </div>
@@ -46,13 +44,13 @@ const Layout = ({ children }) => {
         style={showToggleComponent ? { marginLeft: "16rem" } : {}}
       >
         {/* Header spans full width */}
-        <Header 
+        <Header
           showToggleComponent={showToggleComponent}
-          onToggleComponent={handleToggleComponent} 
+          onToggleComponent={handleToggleComponent}
         />
 
         {/* Main content area with right padding for sidebar */}
-        <main className="flex-1 overflow-y-auto m-2 mr-16 w-[calc(100% - )] ">
+        <main className="flex-1 overflow-y-auto m-2">
           {/* Main content area */}
           <div className="bg-white rounded-lg shadow ">{children}</div>
         </main>

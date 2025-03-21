@@ -137,7 +137,7 @@ const ConfidentialityAgreement = ({ document, versions }) => {
 };
 
 // Sample usage with mock data
-const DocumentVersionViewerDemo = () => {
+const DocumentVersionViewerDemo = ({ agreementData }) => {
   const documentData = {
     title: "Confidentiality Agreement",
     currentVersion: "1.4",

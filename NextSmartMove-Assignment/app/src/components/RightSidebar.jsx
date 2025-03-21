@@ -13,8 +13,6 @@ const RightSidebar = ({ onMenuItemClick = () => {} }) => {
     appSettings?.defaultActiveMenuItem || ""
   );
 
-  const sidebarWidth = appSettings?.sidebarWidth || 240;
-
   const handleMenuItemClick = (key) => {
     setActiveKey(key);
     onMenuItemClick(key);
@@ -36,24 +34,26 @@ const RightSidebar = ({ onMenuItemClick = () => {} }) => {
   ];
 
   return (
-    <div className="h-full w-20  bg-white rounded-lg shadow-lg transition-all duration-300 flex  justify-center items-center flex-col">
+    <div className="h-full w-20 bg-white border-l border-gray-200 shadow-sm flex flex-col justify-start items-center py-4">
       {/* Menu items */}
-      <div className="flex-1 overflow-y-auto py-2 w-14 text-black ">
+      <div className="flex-1 overflow-y-auto w-full text-gray-700 space-y-6">
         {menuItems.map((item) => (
-          <div key={item.key} className="mb-1 flex flex-col items-center">
+          <div key={item.key} className="flex flex-col items-center">
             <Tooltip title={item.label} placement="left">
               <button
                 onClick={() => handleMenuItemClick(item.key)}
-                className={`w-full flex flex-col items-center  hover:bg-gray-100 ${
-                  activeKey === item.key ? "bg-blue-50 text-blue-600" : ""
+                className={`w-16 h-16 flex flex-col items-center justify-center rounded-lg transition-all duration-200 ${
+                  activeKey === item.key
+                    ? "bg-blue-50 text-blue-600"
+                    : "hover:bg-gray-100"
                 }`}
               >
                 <img
                   src={`/icons/${item.icon}`}
                   alt={item.label}
-                  className="w-4 h-4 mb-2" // Adjust icon size and margin
+                  className="w-5 h-5 mb-1"
                 />
-                <div className=" text-xs w-full ">{item.label}</div>
+                <div className="text-xs font-medium mt-1">{item.label}</div>
               </button>
             </Tooltip>
           </div>

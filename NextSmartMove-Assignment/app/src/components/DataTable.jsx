@@ -1,320 +1,191 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
+import Row from "./RowRender";
+import SearchAndFilters from "./SearchAndFilter";
+import DocumentModal from "./DocumentModal";
+import PaginationComponent from "./Pagination";
 import {
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  TableCell,
   Paper,
-  TablePagination,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Button,
   IconButton,
-  InputAdornment,
-  Collapse,
-  Box,
   Tooltip,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import SortIcon from "@mui/icons-material/ArrowUpward"; // You can use any sort icon
-import DateRangeIcon from "@mui/icons-material/DateRange"; // You can change this to a date icon if needed
-
-export const Row = ({ row, columns }) => {
-  const [open, setOpen] = useState(false);
-  const hasSubRows = row.subRows && row.subRows.length > 0;
-
-  const getStatusColor = (status) => {
-    const normalizedStatus = status.toLowerCase().replace(/\s+/g, ""); // Normalize status
-    const statusMap = {
-      completed: "#4caf50",
-      undefined: "#ff9800",
-      notstarted: "red",
-      continuing: "#2196f3",
-    };
-
-    return statusMap[normalizedStatus] || "#9e9e9e"; // Return a default gray if no match
-  };
-
-  // Function to render cell content based on column configuration
-  const renderCellContent = (column, item) => {
-    const value = item[column.id];
-
-    // Check if the column is 'status'
-    if (column.id === "status") {
-      return (
-        <div
-          style={{
-            padding: "4px 8px",
-            backgroundColor: getStatusColor(value), // Apply background color to status cell
-            color: "white", // Ensure text contrast
-            borderRadius: "4px",
-            textAlign: "center",
-          }}
-        >
-          {value}
-        </div>
-      );
-    }
-
-    // Check if the column is 'document' and if item.document is true
-    if (column.id === "document" && value === true) {
-      return (
-        <img
-          src="/icons/Group 193548.svg" // Adjust the path to the correct location of the document icon
-          className="w-10 h-5" // Adjust size as needed
-        />
-      );
-    }
-
-    // Check if the column is 'date' and render date with icon
-    if (column.id === "updateDate" && value) {
-      return (
-        <div className="flex items-center justify-start space-x-2">
-          <img src="/icons/Group 193539.svg" />
-          <span>{value}</span>
-        </div>
-      );
-    }
-
-    return value; // For other columns, return the value without special styling
-  };
-
-  return (
-    <>
-      <TableRow hover>
-        {/* Expansion control */}
-        <TableCell padding="checkbox">
-          {hasSubRows ? (
-            <IconButton
-              size="small"
-              onClick={() => setOpen(!open)}
-              aria-label="expand row"
-            >
-              {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
-            </IconButton>
-          ) : (
-            <div style={{ width: 28 }}></div>
-          )}
-        </TableCell>
-
-        {/* Main row data */}
-        {columns.map((column) => (
-          <TableCell key={column.id} align={column.numeric ? "right" : "left"}>
-            {renderCellContent(column, row)}{" "}
-          </TableCell>
-        ))}
-      </TableRow>
-
-      {/* Nested rows */}
-      {hasSubRows && (
-        <TableRow>
-          <TableCell
-            style={{ paddingBottom: 0, paddingTop: 0 }}
-            colSpan={columns.length + 1}
-          >
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <Table size="small" aria-label="sub-rows">
-                  <TableBody>
-                    {row.subRows.map((subRow, subIndex) => (
-                      <TableRow key={`${row.id}-sub-${subIndex}`}>
-                        {columns.map((column) => (
-                          <TableCell
-                            key={column.id}
-                            align={column.numeric ? "right" : "left"}
-                          >
-                            {renderCellContent(column, subRow)}{" "}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Box>
-            </Collapse>
-          </TableCell>
-        </TableRow>
-      )}
-    </>
-  );
-};
+import FilterListIcon from "@mui/icons-material/FilterList";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const DataTable = ({
   data = [],
   columns = [],
+  statusOptions = [],
   onSearchChange = () => {},
   onDropdownChange = () => {},
+  onStatusChange = () => {},
   onDownload = () => {},
   onFilter = () => {},
+  onDocumentClick = () => {},
+  selectedStatus = "",
 }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [selectedDropdown, setSelectedDropdown] = useState("");
-  const [showFilters, setShowFilters] = useState(false); // Manage filter visibility
-  const [activeFilters, setActiveFilters] = useState(null); // Store active filters
-  const [sortDirection, setSortDirection] = useState({}); // Track sort direction for columns
+  const [showFilters, setShowFilters] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [agreementData, setAgreementData] = useState(null);
+  const [sortConfig, setSortConfig] = useState({
+    key: columns.length > 0 ? columns[0].id : null,
+    direction: "asc",
+  });
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const filterData = useCallback(
+    (data, searchTerm) => {
+      return data.filter((item) => {
+        return columns.some(
+          (column) =>
+            item[column.id] &&
+            item[column.id]
+              .toString()
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        );
+      });
+    },
+    [columns]
+  );
+
+  const filteredData = useMemo(
+    () => filterData(data, searchText),
+    [data, searchText, filterData]
+  );
+
+  const sortedData = useMemo(() => {
+    const sortableData = [...filteredData];
+    if (sortConfig.key) {
+      sortableData.sort((a, b) => {
+        const aValue = a[sortConfig.key];
+        const bValue = b[sortConfig.key];
+
+        if (aValue === bValue) return 0;
+        if (aValue === undefined)
+          return sortConfig.direction === "asc" ? 1 : -1;
+        if (bValue === undefined)
+          return sortConfig.direction === "asc" ? -1 : 1;
+
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          return sortConfig.direction === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+
+        return sortConfig.direction === "asc"
+          ? aValue - bValue
+          : bValue - aValue;
+      });
+    }
+    return sortableData;
+  }, [filteredData, sortConfig]);
+
+  const handleDocumentClick = (item) => {
+    setAgreementData(item.agreement);
+    setIsModalOpen(true);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleSearchChange = (value) => {
+    setSearchText(value);
+    onSearchChange(value);
   };
 
-  const handleSearchChange = (event) => {
-    setSearchText(event.target.value);
-    onSearchChange(event.target.value);
+  const handleDropdownChange = (e) => {
+    setSelectedDropdown(e.target.value);
+    onDropdownChange(e.target.value);
   };
 
-  const handleDropdownChange = (event) => {
-    setSelectedDropdown(event.target.value);
-    onDropdownChange(event.target.value);
+  const handleStatusChange = (newStatus) => {
+    onStatusChange(newStatus);
   };
 
-  const handleApplyFilters = (filters) => {
-    setActiveFilters(filters);
-    setShowFilters(false); // Close filter modal
-    onFilter(filters); // Notify parent component that filters are applied
+  const handleFilterClick = () => {
+    setShowFilters(!showFilters);
+    onFilter(showFilters);
   };
 
-  const handleClearFilters = () => {
-    setActiveFilters(null);
-    setShowFilters(false); // Close filter modal
-    onFilter(null); // Notify parent component that filters are cleared
+  const handleDownloadClick = () => {
+    onDownload(sortedData);
   };
 
   const handleSort = (columnId) => {
-    setSortDirection((prevState) => {
-      const currentDirection = prevState[columnId] || "asc";
-      const newDirection = currentDirection === "asc" ? "desc" : "asc";
-      return { ...prevState, [columnId]: newDirection };
-    });
+    let direction = "asc";
+    if (sortConfig.key === columnId && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key: columnId, direction });
   };
 
-  // Sort the data based on the sort direction
-  const sortedData = data.sort((a, b) => {
-    return columns.map((column) => {
-      const direction = sortDirection[column.id] || "asc";
-      const aValue = a[column.id];
-      const bValue = b[column.id];
+  const getSortIcon = (columnId) => {
+    if (sortConfig.key !== columnId) return null;
 
-      if (aValue < bValue) return direction === "asc" ? -1 : 1;
-      if (aValue > bValue) return direction === "asc" ? 1 : -1;
-      return 0;
-    })[0]; // Sorting based on the first column for simplicity
-  });
+    return sortConfig.direction === "asc" ? (
+      <ArrowUpwardIcon fontSize="small" />
+    ) : (
+      <ArrowDownwardIcon fontSize="small" />
+    );
+  };
 
   return (
-    <div className="w-full h-full">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-4">
-          <FormControl className="w-44">
-            <InputLabel id="main-dropdown-label">
-              All (selected folder)
-            </InputLabel>
-            <Select
-              labelId="main-dropdown-label"
-              value={selectedDropdown}
-              onChange={handleDropdownChange}
-              label="Select Option"
-              className="w-full h-10"
-            >
-              {data.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+    <div className="w-full p-4 mr-36">
+      <div className="flex justify-between items-center mb-4">
+        <SearchAndFilters
+          searchText={searchText}
+          setSearchText={handleSearchChange}
+          selectedDropdown={selectedDropdown}
+          setSelectedDropdown={handleDropdownChange}
+          data={data}
+          statusOptions={statusOptions}
+          selectedStatus={selectedStatus}
+          onDropdownChange={handleDropdownChange}
+          onStatusChange={handleStatusChange}
+        />
 
-          <TextField
-            placeholder="Search..."
-            variant="outlined"
-            size="small"
-            value={searchText}
-            onChange={handleSearchChange}
-            className="flex-grow max-w-md h-10 w-full"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="flex gap-2 items-center">
-            <Button
-              startIcon={
-                <img
-                  src="/icons/arrow-down-to-line.svg"
-                  alt="Download Icon"
-                  className="w-5 h-5"
-                />
-              }
-              onClick={onDownload}
-              className="bg-white h-10"
-            />
-            <IconButton
-              onClick={() => setShowFilters(!showFilters)}
-              color="primary"
-              className="h-10"
-            >
-              <img
-                src="/icons/filter.svg"
-                alt="Filter Icon"
-                className="w-5 h-5"
-              />
+        <div className="flex space-x-2">
+          <Tooltip title="Download">
+            <IconButton onClick={handleDownloadClick}>
+              <GetAppIcon />
             </IconButton>
-          </div>
+          </Tooltip>
+          <Tooltip title="Filter">
+            <IconButton
+              onClick={handleFilterClick}
+              className={showFilters ? "bg-blue-100" : ""}
+            >
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
 
-      {showFilters && (
-        <div className="fixed inset-0 bg-white z-50 flex items-start justify-center pt-16">
-          <div className="bg-white rounded-md shadow-lg w-full max-w-2xl">
-            <Filter
-              onApply={handleApplyFilters}
-              onCancel={() => setShowFilters(false)}
-              onClear={handleClearFilters}
-            />
-          </div>
-        </div>
-      )}
-
-      <TableContainer component={Paper} className="mb-4">
-        <Table sx={{ minWidth: 650 }} aria-label="data table">
+      <TableContainer component={Paper}>
+        <Table>
           <TableHead>
-            <TableRow className="bg-gray-100">
-              <TableCell
-                padding="checkbox"
-                style={{ width: "48px" }}
-              ></TableCell>
+            <TableRow>
+              <TableCell width="50px"></TableCell>{" "}
+              {/* Empty cell for expand icon */}
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.numeric ? "right" : "left"}
-                  className="font-bold"
-                  style={{ width: column.width || "auto" }}
+                  onClick={() => handleSort(column.id)}
+                  style={{ cursor: "pointer" }}
+                  className="select-none"
                 >
-                  {column.label}
-                  <Tooltip title={`Sort by ${column.label}`}>
-                    <IconButton onClick={() => handleSort(column.id)}>
-                      <img src="/icons/caret-down.svg" />
-                    </IconButton>
-                  </Tooltip>
+                  <div className="flex items-center space-x-1">
+                    <span>{column.label}</span>
+                    {getSortIcon(column.id)}
+                  </div>
                 </TableCell>
               ))}
             </TableRow>
@@ -323,10 +194,18 @@ const DataTable = ({
             {sortedData.length > 0 ? (
               sortedData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => <Row key={row.id} row={row} columns={columns} />)
+                .map((row, index) => (
+                  <Row
+                    key={row.id}
+                    row={row}
+                    columns={columns}
+                    onDocumentClick={handleDocumentClick}
+                    isLastRow={index === sortedData.length - 1}
+                  />
+                ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length + 1} align="center">
+                <TableCell colSpan={columns.length + 1}>
                   No data available
                 </TableCell>
               </TableRow>
@@ -335,18 +214,21 @@ const DataTable = ({
         </Table>
       </TableContainer>
 
-      {/* Pagination */}
-      {sortedData.length > 0 && (
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          component="div"
-          count={sortedData.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      )}
+      <PaginationComponent
+        count={sortedData.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={(e, newPage) => setPage(newPage)}
+        onRowsPerPageChange={(e) =>
+          setRowsPerPage(parseInt(e.target.value, 10))
+        }
+      />
+
+      <DocumentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        agreementData={agreementData}
+      />
     </div>
   );
 };
