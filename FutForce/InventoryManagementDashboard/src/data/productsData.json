@@ -1,0 +1,352 @@
+[
+  {
+    "id": 1,
+    "name": "Product 1",
+    "category": "Apparel",
+    "stock_quantity": 72,
+    "price": 84.24
+  },
+  {
+    "id": 2,
+    "name": "Product 2",
+    "category": "Apparel",
+    "stock_quantity": 88,
+    "price": 455.53
+  },
+  {
+    "id": 3,
+    "name": "Product 3",
+    "category": "Beauty",
+    "stock_quantity": 91,
+    "price": 248.68
+  },
+  {
+    "id": 4,
+    "name": "Product 4",
+    "category": "Books",
+    "stock_quantity": 29,
+    "price": 183.81
+  },
+  {
+    "id": 5,
+    "name": "Product 5",
+    "category": "Toys",
+    "stock_quantity": 87,
+    "price": 275.06
+  },
+  {
+    "id": 6,
+    "name": "Product 6",
+    "category": "Apparel",
+    "stock_quantity": 16,
+    "price": 184.74
+  },
+  {
+    "id": 7,
+    "name": "Product 7",
+    "category": "Food",
+    "stock_quantity": 49,
+    "price": 367.7
+  },
+  {
+    "id": 8,
+    "name": "Product 8",
+    "category": "Toys",
+    "stock_quantity": 89,
+    "price": 196.94
+  },
+  {
+    "id": 9,
+    "name": "Product 9",
+    "category": "Food",
+    "stock_quantity": 42,
+    "price": 444.98
+  },
+  {
+    "id": 10,
+    "name": "Product 10",
+    "category": "Beauty",
+    "stock_quantity": 72,
+    "price": 271.21
+  },
+  {
+    "id": 11,
+    "name": "Product 11",
+    "category": "Sports",
+    "stock_quantity": 62,
+    "price": 37.4
+  },
+  {
+    "id": 12,
+    "name": "Product 12",
+    "category": "Electronics",
+    "stock_quantity": 43,
+    "price": 326.06
+  },
+  {
+    "id": 13,
+    "name": "Product 13",
+    "category": "Apparel",
+    "stock_quantity": 78,
+    "price": 10.86
+  },
+  {
+    "id": 14,
+    "name": "Product 14",
+    "category": "Furniture",
+    "stock_quantity": 23,
+    "price": 364.05
+  },
+  {
+    "id": 15,
+    "name": "Product 15",
+    "category": "Electronics",
+    "stock_quantity": 96,
+    "price": 385.62
+  },
+  {
+    "id": 16,
+    "name": "Product 16",
+    "category": "Apparel",
+    "stock_quantity": 89,
+    "price": 249.27
+  },
+  {
+    "id": 17,
+    "name": "Product 17",
+    "category": "Toys",
+    "stock_quantity": 6,
+    "price": 421.58
+  },
+  {
+    "id": 18,
+    "name": "Product 18",
+    "category": "Books",
+    "stock_quantity": 54,
+    "price": 285.96
+  },
+  {
+    "id": 19,
+    "name": "Product 19",
+    "category": "Electronics",
+    "stock_quantity": 59,
+    "price": 91.66
+  },
+  {
+    "id": 20,
+    "name": "Product 20",
+    "category": "Furniture",
+    "stock_quantity": 69,
+    "price": 422.22
+  },
+  {
+    "id": 21,
+    "name": "Product 21",
+    "category": "Books",
+    "stock_quantity": 91,
+    "price": 401.31
+  },
+  {
+    "id": 22,
+    "name": "Product 22",
+    "category": "Food",
+    "stock_quantity": 73,
+    "price": 423.56
+  },
+  {
+    "id": 23,
+    "name": "Product 23",
+    "category": "Sports",
+    "stock_quantity": 25,
+    "price": 285.96
+  },
+  {
+    "id": 24,
+    "name": "Product 24",
+    "category": "Food",
+    "stock_quantity": 79,
+    "price": 186.75
+  },
+  {
+    "id": 25,
+    "name": "Product 25",
+    "category": "Sports",
+    "stock_quantity": 73,
+    "price": 153.48
+  },
+  {
+    "id": 26,
+    "name": "Product 26",
+    "category": "Food",
+    "stock_quantity": 28,
+    "price": 64.55
+  },
+  {
+    "id": 27,
+    "name": "Product 27",
+    "category": "Books",
+    "stock_quantity": 94,
+    "price": 95.62
+  },
+  {
+    "id": 28,
+    "name": "Product 28",
+    "category": "Sports",
+    "stock_quantity": 3,
+    "price": 85.28
+  },
+  {
+    "id": 29,
+    "name": "Product 29",
+    "category": "Sports",
+    "stock_quantity": 16,
+    "price": 498.65
+  },
+  {
+    "id": 30,
+    "name": "Product 30",
+    "category": "Sports",
+    "stock_quantity": 50,
+    "price": 125.11
+  },
+  {
+    "id": 31,
+    "name": "Product 31",
+    "category": "Apparel",
+    "stock_quantity": 21,
+    "price": 468.13
+  },
+  {
+    "id": 32,
+    "name": "Product 32",
+    "category": "Furniture",
+    "stock_quantity": 84,
+    "price": 229.33
+  },
+  {
+    "id": 33,
+    "name": "Product 33",
+    "category": "Toys",
+    "stock_quantity": 94,
+    "price": 274.56
+  },
+  {
+    "id": 34,
+    "name": "Product 34",
+    "category": "Toys",
+    "stock_quantity": 98,
+    "price": 88.85
+  },
+  {
+    "id": 35,
+    "name": "Product 35",
+    "category": "Apparel",
+    "stock_quantity": 25,
+    "price": 415.38
+  },
+  {
+    "id": 36,
+    "name": "Product 36",
+    "category": "Electronics",
+    "stock_quantity": 54,
+    "price": 488.36
+  },
+  {
+    "id": 37,
+    "name": "Product 37",
+    "category": "Electronics",
+    "stock_quantity": 76,
+    "price": 31.6
+  },
+  {
+    "id": 38,
+    "name": "Product 38",
+    "category": "Books",
+    "stock_quantity": 74,
+    "price": 289.65
+  },
+  {
+    "id": 39,
+    "name": "Product 39",
+    "category": "Furniture",
+    "stock_quantity": 35,
+    "price": 421.95
+  },
+  {
+    "id": 40,
+    "name": "Product 40",
+    "category": "Electronics",
+    "stock_quantity": 27,
+    "price": 95.86
+  },
+  {
+    "id": 41,
+    "name": "Product 41",
+    "category": "Toys",
+    "stock_quantity": 87,
+    "price": 178.9
+  },
+  {
+    "id": 42,
+    "name": "Product 42",
+    "category": "Furniture",
+    "stock_quantity": 21,
+    "price": 414.72
+  },
+  {
+    "id": 43,
+    "name": "Product 43",
+    "category": "Electronics",
+    "stock_quantity": 100,
+    "price": 252.0
+  },
+  {
+    "id": 44,
+    "name": "Product 44",
+    "category": "Furniture",
+    "stock_quantity": 64,
+    "price": 397.0
+  },
+  {
+    "id": 45,
+    "name": "Product 45",
+    "category": "Sports",
+    "stock_quantity": 52,
+    "price": 271.12
+  },
+  {
+    "id": 46,
+    "name": "Product 46",
+    "category": "Food",
+    "stock_quantity": 67,
+    "price": 377.55
+  },
+  {
+    "id": 47,
+    "name": "Product 47",
+    "category": "Apparel",
+    "stock_quantity": 47,
+    "price": 324.19
+  },
+  {
+    "id": 48,
+    "name": "Product 48",
+    "category": "Furniture",
+    "stock_quantity": 6,
+    "price": 251.88
+  },
+  {
+    "id": 49,
+    "name": "Product 49",
+    "category": "Food",
+    "stock_quantity": 49,
+    "price": 349.46
+  },
+  {
+    "id": 50,
+    "name": "Product 50",
+    "category": "Furniture",
+    "stock_quantity": 30,
+    "price": 369.31
+  }
+]
