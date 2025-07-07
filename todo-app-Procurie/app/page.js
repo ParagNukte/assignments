@@ -2,7 +2,7 @@ import Link from "next/link";
 import "./globals.css";
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-primary-bg p-4 sm:p-6 lg:p-8 animate-fadeIn text-black gap-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-accent-blue p-4 sm:p-6 lg:p-8 animate-fadeIn text-black gap-8">
       <div className="flex text-2xl ">Get to work with your Todo App!</div>
       <Link href="/todos">
         {" "}

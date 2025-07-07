@@ -13,6 +13,10 @@ pnpm dev
 # or
 bun dev
 ```
+Create a `.env.local` file and with the key value of the URL string from MongoDB.
+```
+MONGODB_URI=mongodb+srv://<MongoDB User>:<MongoDB user password>@todocluster.hrteqp7.mongodb.net/<ClusterName>
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
