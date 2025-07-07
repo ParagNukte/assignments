@@ -5,16 +5,12 @@ const todoSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    id: {
-      type: String,
-      required: true,
-    },
     completed: {
       type: Boolean,
       default: false,
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
-export default Todo = mongoose.model("Todo", todoSchema);
+export default mongoose.models.Todo || mongoose.model("Todo", todoSchema);
